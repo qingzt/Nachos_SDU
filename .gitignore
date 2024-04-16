@@ -1,2 +1,4 @@
 *.o
 machine/sysdep.cc
+nachos
+*.d

@@ -1,3 +1,0 @@
-all:clean
-clean:
-	rm *.noff *.flat

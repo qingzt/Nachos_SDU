@@ -1,3 +1,4 @@
 *.o
 nachos
 *.d
+.vscode/c_cpp_properties.json

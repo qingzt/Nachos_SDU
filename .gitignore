@@ -2,3 +2,7 @@
 nachos
 *.d
 .vscode/c_cpp_properties.json
+*.noff
+*.coff
+coff2flat
+coff2noff

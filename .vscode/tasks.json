@@ -4,7 +4,7 @@
         {
             "type": "cppbuild",
             "label": "Make 生成活动文件",
-            "command": "/usr/bin/gmake",
+            "command": "/usr/bin/make",
             "args": [],
             "options": {
                 "cwd": "${fileDirname}"

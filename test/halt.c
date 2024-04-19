@@ -20,6 +20,6 @@ main()
     i=2; 
     j=j-1;
     k=i-j+k;
-    Halt();
+    Exit(5);
     /* not reached */
 }

@@ -14,7 +14,6 @@
 #include "addrspace.h"
 #include "synch.h"
 
-extern AddrSpace** allAddrSpaces;
 
 //----------------------------------------------------------------------
 // StartProcess

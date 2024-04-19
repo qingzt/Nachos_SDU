@@ -66,6 +66,7 @@ ExceptionHandler(ExceptionType which)
         switch(type){
             case SC_Halt:{
                 DEBUG('a', "Shutdown, initiated by user program.\n");
+                printf("Execute system call of Halt()\n"); 
    	            interrupt->Halt();
                 break;
             }
@@ -83,13 +84,13 @@ ExceptionHandler(ExceptionType which)
                     printf("Unable to open file %s\n",filename);
                     return;
                 }
-                AddrSpace* space=new AddrSpace(executable);//创建地址空间
+                //AddrSpace* space=new AddrSpace(executable);//创建地址空间
                 delete executable;//关闭文件
                 char* forkedThreadName=filename;
                 Thread* thread=new Thread(forkedThreadName);//创建线程
-                thread->Fork(StartProcess,space->getSpaceID());//开始执行线程
-                thread->space=space;
-                space->Print();
+                //thread->Fork(StartProcess,space->getSpaceID());//开始执行线程
+                //thread->space=space;
+                //space->Print();
                 machine->WriteRegister(2,space->getSpaceID());//返回子进程的ID
                 AdvancePC();
                 break;
@@ -102,6 +103,7 @@ ExceptionHandler(ExceptionType which)
                 break;
             }
             case SC_Exit:{
+                printf("Execute system call of Exit()\n");
                 int status=machine->ReadRegister(4);//读取返回值
                 currentThread->setExitStatus(status);//设置返回值
                 if(status==99){

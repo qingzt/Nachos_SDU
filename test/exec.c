@@ -2,9 +2,9 @@
 
 int main()
 {
-    int pid;
-    pid=Exec("../test/halt.noff");
-    Join(pid);
-    Exit(1);
+    int j;
+    j=3;
+    Exec("../test/halt.noff");
+    Halt(j);
     /*not reached*/
 }

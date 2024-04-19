@@ -1,0 +1,44 @@
+Starting thread "main" at time 10
+At PC = 0x0: JAL 52
+At PC = 0x4: SLL r0,r0,0
+At PC = 0xd0: ADDIU r29,r29,-32
+At PC = 0xd4: SW r31,28(r29)
+At PC = 0xd8: SW r30,24(r29)
+At PC = 0xdc: JAL 48
+At PC = 0xe0: ADDU r30,r29,r0
+At PC = 0xc0: JR r0,r31
+At PC = 0xc4: SLL r0,r0,0
+At PC = 0xe4: ADDIU r2,r0,3
+At PC = 0xe8: SW r2,16(r30)
+At PC = 0xec: LUI r4,0
+Executing: LUI r4,0
+At PC = 0xf0: JAL 12
+At PC = 0xf4: ADDIU r4,r4,288
+At PC = 0x30: ADDIU r2,r0,2
+At PC = 0x34: SYSCALL
+Exception: syscall
+Execute system call of Exec()
+Exec(../test/halt.noff):
+At PC = 0x38: JR r0,r31
+At PC = 0x3c: SLL r0,r0,0
+At PC = 0xf8: LW r31,28(r29)
+At PC = 0xfc: LW r30,24(r29)
+At PC = 0x100: JR r0,r31
+At PC = 0x104: ADDIU r29,r29,32
+At PC = 0x0: JAL 52
+At PC = 0x4: SLL r0,r0,0
+At PC = 0xd0: ADDIU r29,r29,-32
+At PC = 0xd4: SW r31,28(r29)
+At PC = 0xd8: SW r30,24(r29)
+At PC = 0xdc: JAL 48
+At PC = 0xe0: ADDU r30,r29,r0
+At PC = 0xc0: JR r0,r31
+At PC = 0xc4: SLL r0,r0,0
+At PC = 0xe4: ADDIU r2,r0,1
+At PC = 0xe8: SW r2,16(r30)
+At PC = 0xec: JAL 8
+At PC = 0xf0: ADDIU r4,r0,5
+At PC = 0x20: ADDIU r2,r0,1
+At PC = 0x24: SYSCALL
+Exception: syscall
+Execute system call of Exit()

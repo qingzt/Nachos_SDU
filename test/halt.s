@@ -6,32 +6,22 @@ __gnu_compiled_c:
 	.globl	main
 	.ent	main
 main:
-	.frame	$fp,40,$31		# vars= 16, regs= 2/0, args= 16, extra= 0
+	.frame	$fp,32,$31		# vars= 8, regs= 2/0, args= 16, extra= 0
 	.mask	0xc0000000,-4
 	.fmask	0x00000000,0
-	subu	$sp,$sp,40
-	sw	$31,36($sp)
-	sw	$fp,32($sp)
+	subu	$sp,$sp,32
+	sw	$31,28($sp)
+	sw	$fp,24($sp)
 	move	$fp,$sp
 	jal	__main
-	li	$2,3			# 0x00000003
-	sw	$2,24($fp)
-	li	$2,2			# 0x00000002
+	li	$2,1			# 0x00000001
 	sw	$2,16($fp)
-	lw	$2,20($fp)
-	addu	$3,$2,-1
-	sw	$3,20($fp)
-	lw	$2,16($fp)
-	lw	$3,20($fp)
-	subu	$2,$2,$3
-	lw	$3,24($fp)
-	addu	$2,$3,$2
-	sw	$2,24($fp)
-	jal	Halt
+	li	$4,5			# 0x00000005
+	jal	Exit
 $L1:
 	move	$sp,$fp
-	lw	$31,36($sp)
-	lw	$fp,32($sp)
-	addu	$sp,$sp,40
+	lw	$31,28($sp)
+	lw	$fp,24($sp)
+	addu	$sp,$sp,32
 	j	$31
 	.end	main

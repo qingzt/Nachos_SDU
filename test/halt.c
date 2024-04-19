@@ -15,11 +15,7 @@
 int
 main()
 {
-    int i,j,k;
-    k=3;
-    i=2; 
-    j=j-1;
-    k=i-j+k;
+    int j=1;
     Exit(5);
     /* not reached */
 }

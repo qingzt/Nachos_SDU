@@ -18,13 +18,12 @@ main:
 	sw	$fp,24($sp)
 	move	$fp,$sp
 	jal	__main
+	li	$2,3			# 0x00000003
+	sw	$2,16($fp)
 	la	$4,$LC0
 	jal	Exec
-	sw	$2,16($fp)
 	lw	$4,16($fp)
-	jal	Join
-	move	$4,$0
-	jal	Exit
+	jal	Halt
 $L1:
 	move	$sp,$fp
 	lw	$31,28($sp)

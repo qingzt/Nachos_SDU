@@ -159,7 +159,7 @@ Thread::Finish ()
     Thread *waitingThread;
     //如果有等待当前线程的线程在等待队列中，唤醒，将其放到就绪队列中
     int listLength=waitingList->ListLength();
-    for(int i=1;i<listLength;i++){
+    for(int i=0;i<listLength;i++){
         waitingThread=(Thread*)waitingList->getItem(i);
         if(currentThread->UserProgramID==waitingThread->waitingProcessSpaceID){
             scheduler->ReadyToRun(waitingThread);

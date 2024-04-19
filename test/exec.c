@@ -3,8 +3,8 @@
 int main()
 {
     int j;
-    j=3;
-    Exec("../test/halt.noff");
-    Halt(j);
+    j=Exec("../test/halt.noff");
+    Join(j);
+    Exit(3);
     /*not reached*/
 }

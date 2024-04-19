@@ -88,7 +88,7 @@ main(int argc, char **argv)
     (void) Initialize(argc, argv);    //system.cc
     
 #ifdef THREADS
-    //ThreadTest();
+    ThreadTest();
 #if 0
     SynchTest();
 #endif 

@@ -58,10 +58,7 @@ SwapHeader (NoffHeader *noffH)
 //	"executable" is the file containing the object code to load into memory
 //----------------------------------------------------------------------
 
-#define MAX_USERPROCESSES 256 
-BitMap *bitmap; //for free frame
-bool ThreadMap[MAX_USERPROCESSES];
-AddrSpace* allAddrSpaces[MAX_USERPROCESSES];
+
 
 AddrSpace::AddrSpace(OpenFile *executable)
 {

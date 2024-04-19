@@ -57,7 +57,6 @@ SwapHeader (NoffHeader *noffH)
 //	"executable" is the file containing the object code to load into memory
 //----------------------------------------------------------------------
 
-
 AddrSpace::AddrSpace(OpenFile *executable)
 {
     NoffHeader noffH;
@@ -113,12 +112,8 @@ AddrSpace::AddrSpace(OpenFile *executable)
         executable->ReadAt(&(machine->mainMemory[noffH.initData.virtualAddr]),
 			noffH.initData.size, noffH.initData.inFileAddr);
     }
-}
 
-int AddrSpace::getSpaceID(){
-    return spaceID;
 }
-
 
 //----------------------------------------------------------------------
 // AddrSpace::~AddrSpace
@@ -127,10 +122,6 @@ int AddrSpace::getSpaceID(){
 
 AddrSpace::~AddrSpace()
 {
-    ThreadMap[spaceID]=false;//释放pid
-    for(int i=0;i<numPages;i++){
-        bitmap->Clear(pageTable[i].physicalPage);//释放页框
-    }
    delete [] pageTable;
 }
 
@@ -150,10 +141,10 @@ AddrSpace::InitRegisters()
     int i;
 
     for (i = 0; i < NumTotalRegs; i++)
-	machine->WriteRegister(i, 0);//寄存器清零
+	machine->WriteRegister(i, 0);
 
     // Initial program counter -- must be location of "Start"
-    machine->WriteRegister(PCReg, 0);	//初始PC寄存器为0
+    machine->WriteRegister(PCReg, 0);	
 
     // Need to also tell MIPS where next instruction is, because
     // of branch delay possibility
@@ -162,7 +153,7 @@ AddrSpace::InitRegisters()
    // Set the stack register to the end of the address space, where we
    // allocated the stack; but subtract off a bit, to make sure we don't
    // accidentally reference off the end!
-    machine->WriteRegister(StackReg, numPages * PageSize - 16);//栈寄存器为当前地址空间的末尾
+    machine->WriteRegister(StackReg, numPages * PageSize - 16);
     DEBUG('a', "Initializing stack register to %d\n", numPages * PageSize - 16);
 }
 
@@ -190,7 +181,6 @@ void AddrSpace::RestoreState()
     machine->pageTable = pageTable;
     machine->pageTableSize = numPages;
 }
-
 void AddrSpace::Print()
 {
     printf("page table dump:  %d pages  in total\n", numPages);  

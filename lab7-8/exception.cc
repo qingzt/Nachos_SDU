@@ -94,6 +94,25 @@ ExceptionHandler(ExceptionType which)
                 AdvancePC();
                 break;
             }
+            case SC_Join:{
+                int SpaceID=machine->ReadRegister(4);//读取子进程的ID
+                currentThread->Join(SpaceID);//等待子进程结束
+                machine->WriteRegister(2,currentThread->waitProcessExitCode);//返回子进程的返回值
+                AdvancePC();
+                break;
+            }
+            case SC_Exit:{
+                int status=machine->ReadRegister(4);//读取返回值
+                currentThread->setExitStatus(status);//设置返回值
+                if(status==99){
+                    List *terminatedList=scheduler->getTerminatedList();
+                    scheduler->emptyList(terminatedList);
+                }
+                delete currentThread->space;//删除地址空间
+                currentThread->Finish();
+                AdvancePC();
+                break;
+            }
         }
     } else {
 	printf("Unexpected user mode exception %d %d\n", which, type);

@@ -2,8 +2,9 @@
 
 int main()
 {
-    SpaceId pid;
+    int pid;
     pid=Exec("../test/halt.noff");
-    Halt();
+    Join(pid);
+    Exit(1);
     /*not reached*/
 }

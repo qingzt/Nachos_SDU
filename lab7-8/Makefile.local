@@ -13,9 +13,14 @@ CCFILES += addrspace.cc\
 	exception.cc\
 	progtest.cc\
 	console.cc\
-	machine.cc\
 	mipssim.cc\
-	translate.cc
+	list.cc\
+	translate.cc\
+	thread.cc\
+	scheduler.cc\
+	main.cc\
+	system.cc
+	
 
 INCPATH += -I../lab7-8 -I../bin -I../userprog -I../filesys
 

@@ -12,7 +12,12 @@
             "args": [
                 // "-rs",
                 // "5",
-                "${input:AddArgs}"
+                // "-d",
+                // "m",
+                // "-s",
+                "-x",
+                "../test/exec.noff",
+                // "${input:AddArgs}"
             ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",

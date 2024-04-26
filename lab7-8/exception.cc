@@ -71,7 +71,7 @@ ExceptionHandler(ExceptionType which)
                 break;
             }
             case SC_Exec:{
-                printf("%s Execute system call of Exec()\n",currentThread->getName());
+                printf("%s %d Execute system call of Exec()\n",currentThread->getName(),currentThread->UserProgramID);
                 char filename[50]; 
                 int addr=machine->ReadRegister(4);
                 int i=0;
@@ -91,13 +91,14 @@ ExceptionHandler(ExceptionType which)
                 thread->Fork(StartProcess,space->getSpaceID());//开始执行线程
                 thread->space=space;
                 thread->UserProgramID=space->getSpaceID();
+                printf("%s %d Exec %s %d\n",currentThread->getName(),currentThread->UserProgramID,thread->getName(),thread->UserProgramID);
                 space->Print();
                 machine->WriteRegister(2,space->getSpaceID());//返回子进程的ID
                 AdvancePC();
                 break;
             }
             case SC_Join:{
-                printf("%s Execute system call of Join()\n",currentThread->getName());
+                printf("%s %d Execute system call of Join()\n",currentThread->getName(),currentThread->UserProgramID);
                 int SpaceID=machine->ReadRegister(4);//读取子进程的ID
                 currentThread->Join(SpaceID);//等待子进程结束
                 machine->WriteRegister(2,currentThread->waitProcessExitCode);//返回子进程的返回值
@@ -105,8 +106,9 @@ ExceptionHandler(ExceptionType which)
                 break;
             }
             case SC_Exit:{
-                printf("%s Execute system call of Exit()\n",currentThread->getName());
+                printf("%s %d Execute system call of Exit()\n",currentThread->getName(),currentThread->UserProgramID);
                 int status=machine->ReadRegister(4);//读取返回值
+                printf("%s %d Exit() with %d\n",currentThread->getName(),currentThread->UserProgramID,status);
                 currentThread->setExitStatus(status);//设置返回值
                 if(status==99){
                     List *terminatedList=scheduler->getTerminatedList();
@@ -114,6 +116,111 @@ ExceptionHandler(ExceptionType which)
                 }
                 delete currentThread->space;//删除地址空间
                 currentThread->Finish();
+                AdvancePC();
+                break;
+            }
+            case SC_Yield:{
+                printf("%s %d Execute system call of Yield()\n",currentThread->getName(),currentThread->UserProgramID);
+                currentThread->Yield();
+                AdvancePC();
+                break;
+            }
+            case SC_Create:{
+                int base=machine->ReadRegister(4);
+                int value;
+                int count=0;
+                char *FileName=new char[128];
+                do{
+                    machine->ReadMem(base+count,1,&value);
+                    FileName[count]=(char)value;
+                    count++;
+                }while((char)value!='\0'&&count<128);
+                int fileDescriptor=OpenForWrite(FileName);
+                if(fileDescriptor==-1){
+                    printf("create file %s failed!\n",FileName);
+                }
+                else{
+                    printf("create %s succeed!,the file is %d\n",FileName,fileDescriptor);
+                }
+                Close(fileDescriptor);
+                AdvancePC();
+                break;
+            }
+            case SC_Open:{
+                int base=machine->ReadRegister(4);
+                int value;
+                int count=0;
+                char *FileName=new char[128];
+                do{
+                    machine->ReadMem(base+count,1,&value);
+                    FileName[count]=(char)value;
+                    count++;
+                }while((char)value!='\0'&&count<128);
+                int fileDescriptor=OpenForReadWrite(FileName,FALSE);
+                if(fileDescriptor==-1){
+                    printf("Open file %s failed!\n",FileName);
+                }
+                else{
+                    printf("Open file %s succeed!, the file id is %d\n",FileName,fileDescriptor); 
+                }
+                machine->WriteRegister(2,fileDescriptor);
+                AdvancePC();
+                break;
+            }
+            case SC_Write:{
+                int base=machine->ReadRegister(4);
+                int size=machine->ReadRegister(5);
+                int fileId=machine->ReadRegister(6);
+                int value;
+                int count=0;
+                OpenFile *openfile=new OpenFile(fileId);
+                ASSERT(openfile != NULL);
+                char *buffer=new char[128];
+                do{
+                    machine->ReadMem(base+count,1,&value);
+                    buffer[count]=(char)value;
+                    count++;
+                }while((char)value!='\0'&&count<size);
+                buffer[size]='\0';
+                int WritePostion;
+                if (fileId==1){
+                    WritePostion=0;
+                }
+                else{
+                    WritePostion=openfile->Length();
+                }
+                int writtenBytes=openfile->WriteAt(buffer,size,WritePostion);
+                if(writtenBytes==0){
+                    printf("write file failed!\n");
+                }
+                else{
+                    printf("\"%s\" has wrote in file %d succeed!\n",buffer,fileId);
+                }
+                AdvancePC();
+                break;
+            }
+            case SC_Read:{
+                int base=machine->ReadRegister(4);
+                int size=machine->ReadRegister(5);
+                int fileId=machine->ReadRegister(6);
+                OpenFile *openfile=new OpenFile(fileId);
+                char buffer[size];
+                int readnum=0;
+                readnum=openfile->Read(buffer,size);
+                for(int i = 0;i < size; i++){
+                    if(!machine->WriteMem(base,1,buffer[i])) 
+                        printf("This is something wrong.\n"); 
+                }
+                buffer[size]='\0';
+                printf("read succeed!The content is \"%s\",the length is %d\n",buffer,size);
+                machine->WriteRegister(2,readnum);
+                AdvancePC();
+                break;
+            }
+            case SC_Close:{
+                int fileId=machine->ReadRegister(4);
+                Close(fileId);
+                printf("File %d closed succeed!\n",fileId);
                 AdvancePC();
                 break;
             }

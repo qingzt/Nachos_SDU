@@ -16,7 +16,7 @@
                 // "m",
                 // "-s",
                 "-x",
-                "../test/exec.noff",
+                "../test/file.noff",
                 // "${input:AddArgs}"
             ],
             "stopAtEntry": false,
